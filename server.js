@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require ('path');
 const http=require('http');
 const express= require('express');
 const socketio =require('socket.io');
@@ -14,7 +14,8 @@ const server= http.createServer(app);
 const io= socketio(server);
 
 //set static folder
-app.use(express.static(path.join(__dirname,'./main/public')));
+app.use(express.static(path.join(__dirname,'./main')));
+
 
 const botName ='Vchat';
 
@@ -40,21 +41,37 @@ io.on("connection",socket => {
         //send users and room info 
         io.to(user.room).emit('roomUsers',{
             room:user.room,
-            users: getRoomusers(user.room)
+            users:getRoomusers(user.room)
         });
 
     });
-    
+    // function upload(files) {
+    //     socket. emit("upload", files[0], (status) => {
+    //             console.log(status);
+    //         });
+    // });
+      
+            
+            
+            
+        
 
     
     
     
 
     //Listen for chatMessage
-    socket.on('chatMessage',(msg)=> {
+    socket.on('chatMessage',(msg,files)=> {
         const user = getCurrentUser(socket.id);
         io.to(user.room).emit('message',formatMessages(user.username,msg));
+        
     });
+    socket.on('Sharedfiles',(msg,files)=> {
+        const user = getCurrentUser(socket.id);
+            io.to(user.room).emit('message',formatMessages(user.username,files));
+    
+    });
+
 
     //Runs when a user disconnects
     socket.on('disconnect', () => {
@@ -81,7 +98,7 @@ io.on("connection",socket => {
 }); 
 
 
-const PORT=5000 || process.env.PORT;
+const PORT= process.env.PORT || 5000;
 
 server.listen(PORT, () => console.log("running on port",PORT));
 
