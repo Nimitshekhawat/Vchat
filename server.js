@@ -17,7 +17,7 @@ const io= socketio(server);
 app.use(express.static(path.join(__dirname,'./main')));
 
 
-const botName ='Vchat';
+const botName ='UrbanMesh';
 
 //Run when client connects
 io.on("connection",socket => { 
@@ -28,7 +28,7 @@ io.on("connection",socket => {
         
         
         //Welcome current user
-        socket.emit('message',formatMessages(botName,'Welcome to Vchat!'));//this is for single user
+        socket.emit('message',formatMessages(botName,'Welcome to UrbanMesh!'));//this is for single user
     
     //Broadcast when a user connects
     //this is for the all except the client connecting
